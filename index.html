@@ -1,57 +1,150 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Me dijeron que puedo ver el futuro 🔮</title>
-<style>
-body {display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; font-family: sans-serif; background: linear-gradient(to bottom right, #ffe0f0, #e0f7fa); margin: 0; text-align: center; padding: 20px;}
-h1 {font-size: 2em; margin: 20px;}
-button {padding: 10px 20px; font-size: 1em; border: none; border-radius: 8px; cursor: pointer; background-color: #ff80ab; color: white; transition: background-color 0.3s; margin-top: 10px;}
-button:active {background-color: #ff4081;}
-.reveal {opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.8s ease, max-height 0.8s ease;}
-.reveal.show {opacity: 1; max-height: 2000px;}
-#mensaje, #mensaje2, #mensaje3, #mensaje4 {margin-top: 20px; padding: 15px; background: white; border-radius: 10px; max-width: 320px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 1.1em;}
-ul {text-align: left; padding-left: 20px;}
-img {max-width: 100%; border-radius: 10px; margin-top: 10px;}
-iframe {width: 100%; height: 500px; border: none; border-radius: 10px; margin-top: 10px;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Silueta Interactiva del Cuerpo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #eef1f5;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    header {
+      margin-bottom: 20px;
+    }
+
+    .boton-inicio {
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .boton-inicio:hover {
+      background-color: #555;
+    }
+
+    .container {
+      position: relative;
+      width: 300px;
+      display: none;
+      margin-top: 20px;
+    }
+
+    .silueta {
+      width: 100%;
+      filter: grayscale(1);
+      opacity: 0.8;
+    }
+
+    .boton {
+      position: absolute;
+      padding: 4px 8px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .boton::after {
+      content: "➔";
+      margin-left: 5px;
+    }
+
+    .uno { top: 20px; left: 120px; }
+    .dos { top: 80px; left: 115px; }
+    .tres { top: 140px; left: 130px; }
+    .cuatro { top: 120px; left: 200px; }
+    .cinco { top: 200px; left: 220px; }
+    .seis { top: 260px; left: 140px; }
+    .siete { top: 340px; left: 140px; }
+    .ocho { top: 300px; left: 200px; }
+    .nueve { top: 380px; left: 120px; } 
+    .diez { top: 440px; left: 100px; }
+    .once { top: 500px; left: 150px; }
+
+    .texto {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 320px;
+      width: 220px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      line-height: 1.4;
+      transition: opacity 0.3s;
+      text-align: left;
+    }
+
+    .visible {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-<h1>Me dijeron que puedo ver el futuro 🔮</h1>
-<button id="btn1">¿Tú qué dices?</button>
-<div id="mensaje" class="reveal">
-  <strong>¿Seré digno?</strong><br><br>
-  <img src="https://img.wattpad.com/448d1cae004cba21daedf8ab987dc4827d92c201/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f67496e5f7472784e704c546c43513d3d2d313232373431363535382e313666306530303031313836643465633235303035383232373431302e676966" alt="Thor levantando el martillo gif"><br><br>
-  <button id="btn2">¿He entendido las cosas correctamente?</button>
+
+<header>
+    <h1>Me preguntaron lo que me gusta de Carla</h1>
+    <button class="boton-inicio" onclick="mostrarSilueta()">¿Quieres conocer la respuesta?</button>
+</header>
+
+<div class="container" id="siluetaContainer">
+  <img src="vectorsilueta.png" alt="Silueta Humana" class="silueta">
+
+  <button class="boton uno" onclick="mostrarTexto('texto1')">Me gusta de ti #1</button>
+  <button class="boton dos" onclick="mostrarTexto('texto2')">Me gusta de ti #2</button>
+  <button class="boton tres" onclick="mostrarTexto('texto3')">Me gusta de ti #3</button>
+  <button class="boton cuatro" onclick="mostrarTexto('texto4')">Me gusta de ti #4</button>
+  <button class="boton cinco" onclick="mostrarTexto('texto5')">Me gusta de ti #5</button>
+  <button class="boton seis" onclick="mostrarTexto('texto6')">Me gusta de ti #6</button>
+  <button class="boton siete" onclick="mostrarTexto('texto7')">Me gusta de ti #7</button>
+  <button class="boton ocho" onclick="mostrarTexto('texto8')">Me gusta de ti #8</button>
+  <button class="boton nueve" onclick="mostrarTexto('texto9')">Me gusta de ti #9</button>
+  <button class="boton diez" onclick="mostrarTexto('texto10')">Me gusta de ti #10</button>
+  <button class="boton once" onclick="mostrarTexto('texto11')">Al final...</button>
+
+  <div id="texto1" class="texto">Me gusta tu sonrisa</div>
+  <div id="texto2" class="texto">Me gustan que aproveches la hora de las quejas</div>
+  <div id="texto3" class="texto">Me gusta tu forma de ver las cosas y lo distraída/lista/centrada que también eres</div>
+  <div id="texto4" class="texto">Me gusta cuando te pones nerviosa</div>
+  <div id="texto5" class="texto">Me gusta tu bailecito al comer, me gusta cuando vives el momento y se te nota en tu sonrisa</div>
+  <div id="texto6" class="texto">Me gustan tus ojos</div>
+  <div id="texto7" class="texto">Me gusta lo complicada que a veces pareces ser</div>
+  <div id="texto8" class="texto">Me gusta cuando evades temas por miedo, por pena, o por sepa dios qué será, pero me gusta cuando lo haces</div>
+  <div id="texto9" class="texto">Me gusta cuando estás cansada y quieres mandar a todos a volar, me gusta pasear contigo en el coche, me gusta ir por café contigo</div>
+  <div id="texto10" class="texto">Pero por sobre todas las cosas, me gusta Carla por el simple hecho de ser Carla, con sus enojos, con sus desconexiones del mundo, con sus malos ratos y sus buenos ratos.</div>
+  <div id="texto11" class="texto">Me faltarían botones y páginas, código que elaborar para poder decirte todo lo que me gusta, pero espero que lo puedas ir entendiendo.</div>
 </div>
-<div id="mensaje2" class="reveal">
-  ¿Sabes? Quizá me pueda equivocar... pero me dijeron por ahí que las oportunidades se dan, quizá en esta oportunidad podemos:
-  <ul>
-    <li>Ir por múltiples cafés para platicar de nosotros ☕</li>
-    <li>Conocer nuevos lugares para nuestras comidas de elección por sorteo 🎬</li>
-    <li>Armar nuestro lego pendiente 🌅</li>
-    <li>Colorear contigo 🎨</li>
-    <li>Darte 2 horas diarias de quejas gratis 💪</li>
-    <li>Y crear unas cuantas buenas historias juntos que contar 🎈</li>
-  </ul>
-  <button id="btn3">❓</button>
-</div>
-<div id="mensaje3" class="reveal">
-  Así que... ¿Te gustaría intentarlo juntos? ❤️<br><br>
-  <button id="btn4">❓</button>
-</div>
-<div id="mensaje4" class="reveal">
-  <iframe src="https://www.tiktok.com/embed/v2/7521975918538296632" allowfullscreen></iframe>
-</div>
+
 <script>
-function showElement(id) {
-  document.getElementById(id).classList.add('show');
-}
-document.getElementById('btn1').addEventListener('click', function() { showElement('mensaje'); });
-document.getElementById('btn2').addEventListener('click', function() { showElement('mensaje2'); });
-document.getElementById('btn3').addEventListener('click', function() { showElement('mensaje3'); });
-document.getElementById('btn4').addEventListener('click', function() { showElement('mensaje4'); });
+  function mostrarSilueta() {
+    document.getElementById('siluetaContainer').style.display = 'block';
+  }
+
+  function mostrarTexto(id) {
+    document.querySelectorAll('.texto').forEach(t => t.classList.remove('visible'));
+    document.getElementById(id).classList.add('visible');
+  }
 </script>
+
 </body>
 </html>
