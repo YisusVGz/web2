@@ -1,150 +1,310 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Silueta Interactiva del Cuerpo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cupón especial</title>
   <style>
-    body {
+    :root {
+      --bg1: #fdf2ff;
+      --bg2: #e0c3fc;
+      --card: #ffffff;
+      --accent: #a855f7;
+      --accent-dark: #9333ea;
+      --used: #fb7185;
+      --text: #2b123a;
+      --muted: #7b6b8f;
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, var(--bg1), var(--bg2));
+      padding: 1.5rem;
+    }
+
+    .announcement {
+      max-width: 450px;
+      width: 100%;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(88, 28, 135, 0.3);
+      padding: 2rem;
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .announcement h2 {
+      font-size: 1.4rem;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+    }
+
+    .announcement p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .btn-main {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
+      background-size: 200% 200%;
+      color: #fff7ff;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background-position 0.5s ease;
+      box-shadow: 0 12px 26px rgba(192, 38, 211, 0.45);
+    }
+
+    .btn-main:hover {
+      transform: translateY(-1px);
+      background-position: 100% 0%;
+      box-shadow: 0 16px 32px rgba(168, 85, 247, 0.6);
+    }
+
+    /* CUPÓN (oculto al inicio) */
+    .coupon-card {
+      display: none;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(88, 28, 135, 0.3);
+      max-width: 400px;
+      width: 100%;
+      padding: 2rem 1.7rem 1.6rem;
+      position: relative;
+      animation: fadeIn 0.8s ease;
+    }
+
+    /* Ticket border */
+    .coupon-card::before {
+      content: "";
+      position: absolute;
+      inset: 0.9rem;
+      border-radius: 18px;
+      border: 2px dashed rgba(168, 85, 247, 0.35);
+      pointer-events: none;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(244, 114, 182, 0.16);
+      color: #9d174d;
+      padding: 0.25rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tag-emoji {
+      font-size: 0.9rem;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin-top: 1rem;
+      margin-bottom: 0.3rem;
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .highlight-box {
+      background: #f9e8ff;
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      gap: 0.25rem;
+      margin-bottom: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .highlight-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b21a8;
+      font-weight: 700;
+    }
+
+    .highlight-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #4c1d95;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      height: 100vh;
-      background: #eef1f5;
-      font-family: sans-serif;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .status-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .status-pill.used {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .status-pill.used .status-dot {
+      background: #fb7185;
+    }
+
+    #redeem-btn {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
+      background-size: 200% 200%;
+      color: #fff7ff;
+      transition: 0.15s ease;
+      box-shadow: 0 12px 26px rgba(192, 38, 211, 0.45);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+    }
+
+    #redeem-btn:hover {
+      transform: translateY(-1px);
+      background-position: 100% 0%;
+      box-shadow: 0 16px 32px rgba(168, 85, 247, 0.6);
+    }
+
+    .extra-text {
+      margin-top: 0.8rem;
+      font-size: 0.78rem;
+      color: var(--muted);
       text-align: center;
     }
 
-    header {
-      margin-bottom: 20px;
-    }
-
-    .boton-inicio {
-      padding: 10px 20px;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    .boton-inicio:hover {
-      background-color: #555;
-    }
-
-    .container {
-      position: relative;
-      width: 300px;
-      display: none;
-      margin-top: 20px;
-    }
-
-    .silueta {
-      width: 100%;
-      filter: grayscale(1);
-      opacity: 0.8;
-    }
-
-    .boton {
-      position: absolute;
-      padding: 4px 8px;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .boton::after {
-      content: "➔";
-      margin-left: 5px;
-    }
-
-    .uno { top: 20px; left: 120px; }
-    .dos { top: 80px; left: 115px; }
-    .tres { top: 140px; left: 130px; }
-    .cuatro { top: 120px; left: 200px; }
-    .cinco { top: 200px; left: 220px; }
-    .seis { top: 260px; left: 140px; }
-    .siete { top: 340px; left: 140px; }
-    .ocho { top: 300px; left: 200px; }
-    .nueve { top: 380px; left: 120px; } 
-    .diez { top: 440px; left: 100px; }
-    .once { top: 500px; left: 150px; }
-
-    .texto {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 320px;
-      width: 220px;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      line-height: 1.4;
-      transition: opacity 0.3s;
-      text-align: left;
-    }
-
-    .visible {
-      display: block;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-<header>
-    <h1>Me preguntaron lo que me gusta de Carla</h1>
-    <button class="boton-inicio" onclick="mostrarSilueta()">¿Quieres conocer la respuesta?</button>
-</header>
+  <div id="announcement" class="announcement">
+    <h2>¡Has recibido un cupón!</h2>
+    <p>
+      ¿Lista para verlo?👀
+    </p>
+    <button class="btn-main" id="open-coupon">Ver cupón</button>
+  </div>
 
-<div class="container" id="siluetaContainer">
-  <img src="https://github.com/YisusVGz/web2/blob/main/vectorsilueta.png" alt="Silueta Humana" class="silueta">
+  <div id="coupon" class="coupon-card">
+    <div class="tag">
+      <span class="tag-emoji">🎟️</span>
+      Edición limitada 👓
+    </div>
 
-  <button class="boton uno" onclick="mostrarTexto('texto1')">Me gusta de ti #1</button>
-  <button class="boton dos" onclick="mostrarTexto('texto2')">Me gusta de ti #2</button>
-  <button class="boton tres" onclick="mostrarTexto('texto3')">Me gusta de ti #3</button>
-  <button class="boton cuatro" onclick="mostrarTexto('texto4')">Me gusta de ti #4</button>
-  <button class="boton cinco" onclick="mostrarTexto('texto5')">Me gusta de ti #5</button>
-  <button class="boton seis" onclick="mostrarTexto('texto6')">Me gusta de ti #6</button>
-  <button class="boton siete" onclick="mostrarTexto('texto7')">Me gusta de ti #7</button>
-  <button class="boton ocho" onclick="mostrarTexto('texto8')">Me gusta de ti #8</button>
-  <button class="boton nueve" onclick="mostrarTexto('texto9')">Me gusta de ti #9</button>
-  <button class="boton diez" onclick="mostrarTexto('texto10')">Me gusta de ti #10</button>
-  <button class="boton once" onclick="mostrarTexto('texto11')">Al final...</button>
+    <h1>Cupón para celebrar contigo</h1>
 
-  <div id="texto1" class="texto">Me gusta tu sonrisa</div>
-  <div id="texto2" class="texto">Me gustan que aproveches la hora de las quejas</div>
-  <div id="texto3" class="texto">Me gusta tu forma de ver las cosas y lo distraída/lista/centrada que también eres</div>
-  <div id="texto4" class="texto">Me gusta cuando te pones nerviosa</div>
-  <div id="texto5" class="texto">Me gusta tu bailecito al comer, me gusta cuando vives el momento y se te nota en tu sonrisa</div>
-  <div id="texto6" class="texto">Me gustan tus ojos</div>
-  <div id="texto7" class="texto">Me gusta lo complicada que a veces pareces ser</div>
-  <div id="texto8" class="texto">Me gusta cuando evades temas por miedo, por pena, o por sepa dios qué será, pero me gusta cuando lo haces</div>
-  <div id="texto9" class="texto">Me gusta cuando estás cansada y quieres mandar a todos a volar, me gusta pasear contigo en el coche, me gusta ir por café contigo</div>
-  <div id="texto10" class="texto">Pero por sobre todas las cosas, me gusta Carla por el simple hecho de ser Carla, con sus enojos, con sus desconexiones del mundo, con sus malos ratos y sus buenos ratos.</div>
-  <div id="texto11" class="texto">Me faltarían botones y páginas, código que elaborar para poder decirte todo lo que me gusta, pero espero que lo puedas ir entendiendo.</div>
-</div>
+    <p class="subtitle">
+      Canjeable por una salida juntos.
+    </p>
 
-<script>
-  function mostrarSilueta() {
-    document.getElementById('siluetaContainer').style.display = 'block';
-  }
+    <div class="highlight-box">
+      <span class="highlight-label">Esto incluye</span>
+      <span class="highlight-text">
+        1 café (o lo que tú quieras, puede ser comida desayuno o cena) + tiempo juntos + yo intentando no ponerme nervioso 😅 + abrazos ilimitados
+      </span>
+    </div>
 
-  function mostrarTexto(id) {
-    document.querySelectorAll('.texto').forEach(t => t.classList.remove('visible'));
-    document.getElementById(id).classList.add('visible');
-  }
-</script>
+    <div class="status-row">
+      <span>Estado del cupón:</span>
+      <span id="status-pill" class="status-pill">
+        <span class="status-dot"></span> Disponible
+      </span>
+    </div>
 
+    <button id="redeem-btn">
+      ✨ Usar este cupón
+    </button>
+
+    <p class="extra-text" id="info-text">
+      Solo tienes que decirme “sí quiero” o mandarme un mensaje con la confirmación para poder verte (Que ya hace falta 🤓)
+    </p>
+  </div>
+
+  <script>
+    const announcement = document.getElementById("announcement");
+    const coupon = document.getElementById("coupon");
+    const openCouponBtn = document.getElementById("open-coupon");
+
+    openCouponBtn.addEventListener("click", () => {
+      announcement.style.display = "none";
+      coupon.style.display = "block";
+    });
+
+    const redeemBtn = document.getElementById("redeem-btn");
+    const statusPill = document.getElementById("status-pill");
+    const infoText = document.getElementById("info-text");
+
+    redeemBtn.addEventListener("click", () => {
+      statusPill.classList.add("used");
+      statusPill.innerHTML = '<span class="status-dot"></span>Cupón usado (y yo muy feliz)';
+      redeemBtn.disabled = true;
+      redeemBtn.textContent = "¡Cita confirmada!";
+      infoText.textContent = "Puede ser válido cualquier día y mas de un día (Por favor)";
+    });
+  </script>
 </body>
 </html>
