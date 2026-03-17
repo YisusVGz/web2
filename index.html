@@ -1,310 +1,297 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cupón especial</title>
-  <style>
-    :root {
-      --bg1: #fdf2ff;
-      --bg2: #e0c3fc;
-      --card: #ffffff;
-      --accent: #a855f7;
-      --accent-dark: #9333ea;
-      --used: #fb7185;
-      --text: #2b123a;
-      --muted: #7b6b8f;
-      --radius: 22px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Paleta en tonos vino y rosados tenues */
+            --text-primary: #f2e8eb; 
+            --text-secondary: #c9b6bc;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-wine: #d6406a; /* Un tono vino/frambuesa brillante para resaltar */
+            --bg-base: #1a0b11; /* Un fondo casi negro, pero con un matiz ciruela oscuro */
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Quicksand', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at top, var(--bg1), var(--bg2));
-      padding: 1.5rem;
-    }
+        /* Orbes de luz en el fondo con tonos vino */
+        .background-orbs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
 
-    .announcement {
-      max-width: 450px;
-      width: 100%;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 20px 50px rgba(88, 28, 135, 0.3);
-      padding: 2rem;
-      text-align: center;
-      animation: fadeIn 0.8s ease;
-    }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.4;
+            animation: float 10s ease-in-out infinite alternate;
+        }
 
-    .announcement h2 {
-      font-size: 1.4rem;
-      color: var(--text);
-      margin-bottom: 0.8rem;
-    }
+        .orb-1 {
+            width: 350px;
+            height: 350px;
+            background: #9e2a46; /* Vino tinto */
+            top: -50px;
+            right: -100px;
+        }
 
-    .announcement p {
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 1.4rem;
-    }
+        .orb-2 {
+            width: 450px;
+            height: 450px;
+            background: #4a1122; /* Borgoña muy oscuro */
+            bottom: -150px;
+            left: -100px;
+            animation-delay: -5s;
+        }
 
-    .btn-main {
-      width: 100%;
-      border: none;
-      border-radius: 999px;
-      padding: 0.9rem 1rem;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
-      background-size: 200% 200%;
-      color: #fff7ff;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background-position 0.5s ease;
-      box-shadow: 0 12px 26px rgba(192, 38, 211, 0.45);
-    }
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(30px) scale(1.05); }
+        }
 
-    .btn-main:hover {
-      transform: translateY(-1px);
-      background-position: 100% 0%;
-      box-shadow: 0 16px 32px rgba(168, 85, 247, 0.6);
-    }
+        .accordion-wrapper {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 1;
+        }
 
-    /* CUPÓN (oculto al inicio) */
-    .coupon-card {
-      display: none;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 20px 50px rgba(88, 28, 135, 0.3);
-      max-width: 400px;
-      width: 100%;
-      padding: 2rem 1.7rem 1.6rem;
-      position: relative;
-      animation: fadeIn 0.8s ease;
-    }
+        .accordion-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; /* Bordes un poco más redondeados para acompañar la fuente */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+        }
 
-    /* Ticket border */
-    .coupon-card::before {
-      content: "";
-      position: absolute;
-      inset: 0.9rem;
-      border-radius: 18px;
-      border: 2px dashed rgba(168, 85, 247, 0.35);
-      pointer-events: none;
-    }
+        .accordion-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px);
+        }
 
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(244, 114, 182, 0.16);
-      color: #9d174d;
-      padding: 0.25rem 0.8rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      position: relative;
-      z-index: 1;
-    }
+        .accordion-header {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-primary);
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+        }
 
-    .tag-emoji {
-      font-size: 0.9rem;
-    }
+        .icon {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+        }
 
-    h1 {
-      font-size: 1.4rem;
-      margin-top: 1rem;
-      margin-bottom: 0.3rem;
-      color: var(--text);
-      position: relative;
-      z-index: 1;
-      line-height: 1.2;
-    }
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-    .subtitle {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-      position: relative;
-      z-index: 1;
-    }
+        .content-inner {
+            overflow: hidden;
+            padding: 0 24px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
 
-    .highlight-box {
-      background: #f9e8ff;
-      border-radius: 14px;
-      padding: 0.9rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      margin-bottom: 1.1rem;
-      position: relative;
-      z-index: 1;
-    }
+        .accordion-item.active {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
 
-    .highlight-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #6b21a8;
-      font-weight: 700;
-    }
+        .accordion-item.active .accordion-content {
+            grid-template-rows: 1fr;
+        }
 
-    .highlight-text {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #4c1d95;
-    }
+        .accordion-item.active .content-inner {
+            padding: 0 24px 24px 24px;
+        }
 
-    .status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
+        .accordion-item.active .icon {
+            transform: rotate(45deg);
+            color: var(--accent-wine);
+        }
 
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-weight: 600;
-      font-size: 0.8rem;
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      background: #ecfdf5;
-      color: #047857;
-    }
+        /* Apartado vulnerable con acento en tono vino */
+        .special-item {
+            border-left: 4px solid var(--accent-wine);
+            margin-top: 24px;
+            background: linear-gradient(90deg, rgba(214, 64, 106, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+        }
 
-    .status-dot {
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 999px;
-      background: #22c55e;
-    }
-
-    .status-pill.used {
-      background: #fef2f2;
-      color: #b91c1c;
-    }
-
-    .status-pill.used .status-dot {
-      background: #fb7185;
-    }
-
-    #redeem-btn {
-      width: 100%;
-      border: none;
-      border-radius: 999px;
-      padding: 0.9rem 1rem;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(135deg, #f97316, #ec4899, #8b5cf6);
-      background-size: 200% 200%;
-      color: #fff7ff;
-      transition: 0.15s ease;
-      box-shadow: 0 12px 26px rgba(192, 38, 211, 0.45);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45rem;
-    }
-
-    #redeem-btn:hover {
-      transform: translateY(-1px);
-      background-position: 100% 0%;
-      box-shadow: 0 16px 32px rgba(168, 85, 247, 0.6);
-    }
-
-    .extra-text {
-      margin-top: 0.8rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+        .special-item .accordion-header {
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
 
-  <div id="announcement" class="announcement">
-    <h2>¡Has recibido un cupón!</h2>
-    <p>
-      ¿Lista para verlo?👀
-    </p>
-    <button class="btn-main" id="open-coupon">Ver cupón</button>
-  </div>
+<div class="background-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+</div>
 
-  <div id="coupon" class="coupon-card">
-    <div class="tag">
-      <span class="tag-emoji">🎟️</span>
-      Edición limitada 👓
+<main class="accordion-wrapper">
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            ¿Qué puedo ofrecer?
+            <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="content-inner">
+                <p>Tiempo de calidad
+                    Fideliddad
+                    Compromiso
+                    Equipo
+                    Tolerancia
+                    Paciencia
+                    Amor
+                    Mucho contacto jaja
+                    Impulsarte y sostenerte en tus proyectos y en los momentos complicados
+                    Siempre sostenerte y acompañarte en lo que necesites, sin importar el tema o la situación.
+                    Ser tu complice en todo lo que quieras hacer, sin importar lo loco o difícil que sea.
+                    Ser escucha activa, para que puedas expresarte sin miedo a ser juzgada, y para que siempre sientas que tienes un espacio seguro conmigo.
+                    ser un lugar seguro para que puedas ser tú misma, sin filtros, y para que siempre te sientas amada y valorada por quien eres en realidad.
+                </p>
+            </div>
+        </div>
     </div>
 
-    <h1>Cupón para celebrar contigo</h1>
-
-    <p class="subtitle">
-      Canjeable por una salida juntos.
-    </p>
-
-    <div class="highlight-box">
-      <span class="highlight-label">Esto incluye</span>
-      <span class="highlight-text">
-        1 café (o lo que tú quieras, puede ser comida desayuno o cena) + tiempo juntos + yo intentando no ponerme nervioso 😅 + abrazos ilimitados
-      </span>
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            ¿Qué quiero?
+            <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="content-inner">
+                <p>Sentirme amado
+                    Acompañado
+                    Libre
+                    En paz
+                    Generar confianza y seguridad
+                    Que me apoyes en mis proyectos y en mis momentos difíciles, sin importar el tema o la situación.
+                    Que seas mi cómplice en todo lo que quiera hacer, sin importar lo loco o difícil que sea.
+                    Que podamos tener planes juntos, para compartir momentos especiales y crear recuerdos.
+                    Sentirte, sentir tu cariño aunque no sea mucho contacto físico, para que siempre sientas que tienes un espacio seguro conmigo.
+                    Que seas un lugar seguro para que pueda ser yo mismo, sin filtros, y para que siempre me sienta amado y valorado por quien soy en realidad.
+                </p>
+            </div>
+        </div>
     </div>
 
-    <div class="status-row">
-      <span>Estado del cupón:</span>
-      <span id="status-pill" class="status-pill">
-        <span class="status-dot"></span> Disponible
-      </span>
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            ¿Qué no quiero?
+            <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="content-inner">
+                <p>Temblar
+                    Sentirme solo
+                    Sentirme incapaz de hablar
+                    Sentirme que no puedo acercarme 
+                    Sentir que no haremos nada afuera de la oficina
+                    Sentir que solo existo en la oficina
+                </p>
+            </div>
+        </div>
     </div>
 
-    <button id="redeem-btn">
-      ✨ Usar este cupón
-    </button>
+    <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false">
+            ¿Qué no puedo negociar?
+            <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="content-inner">
+                <p>No tener no tiempo para nosotros
+                    No tener planes
+                    No tener contacto físico
+                    No tener confianza
+                    No tener un espacio seguro para ser yo mismo
+                        No sentir que puedo hablar de cualquier tema sin miedo a ser juzgado
+                        No sentir que puedo ser yo mismo sin miedo a ser juzgado
+                Poder acercarme a ti y tener contacto físico y de otro tipo jeje
+                </p>
+            </div>
+        </div>
+    </div>
 
-    <p class="extra-text" id="info-text">
-      Solo tienes que decirme “sí quiero” o mandarme un mensaje con la confirmación para poder verte (Que ya hace falta 🤓)
-    </p>
-  </div>
+    <div class="accordion-item special-item">
+        <button class="accordion-header" aria-expanded="false">
+            Y lo que me duele es...
+            <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="content-inner">
+                <p>Este espacio es para la vulnerabilidad pura. Aquí puedes expresar miedos, inseguridades o heridas sin filtros, para que se entiendan desde la empatía.</p>
+            </div>
+        </div>
+    </div>
+</main>
 
-  <script>
-    const announcement = document.getElementById("announcement");
-    const coupon = document.getElementById("coupon");
-    const openCouponBtn = document.getElementById("open-coupon");
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const headers = document.querySelectorAll('.accordion-header');
 
-    openCouponBtn.addEventListener("click", () => {
-      announcement.style.display = "none";
-      coupon.style.display = "block";
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const currentItem = header.parentElement;
+                const isActive = currentItem.classList.contains('active');
+
+                document.querySelectorAll('.accordion-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
+                });
+
+                if (!isActive) {
+                    currentItem.classList.add('active');
+                    header.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
     });
+</script>
 
-    const redeemBtn = document.getElementById("redeem-btn");
-    const statusPill = document.getElementById("status-pill");
-    const infoText = document.getElementById("info-text");
-
-    redeemBtn.addEventListener("click", () => {
-      statusPill.classList.add("used");
-      statusPill.innerHTML = '<span class="status-dot"></span>Cupón usado (y yo muy feliz)';
-      redeemBtn.disabled = true;
-      redeemBtn.textContent = "¡Cita confirmada!";
-      infoText.textContent = "Puede ser válido cualquier día y mas de un día (Por favor)";
-    });
-  </script>
 </body>
 </html>
